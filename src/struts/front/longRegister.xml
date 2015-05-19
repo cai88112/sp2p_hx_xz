@@ -1,0 +1,124 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE struts PUBLIC
+    "-//Apache Software Foundation//DTD Struts Configuration 2.0//EN"
+    "http://struts.apache.org/dtds/struts-2.0.dtd">
+<struts>
+	<package name="register" extends="struts-default" namespace="/">
+	  <!-- 个人设置邮箱绑定发送 -->
+	  <global-results>  
+    	<result name="error" >/500.jsp</result>
+	  </global-results>  
+	  <global-exception-mappings>  
+    	<exception-mapping result="error" exception="java.lang.Exception"></exception-mapping>  
+	  </global-exception-mappings>
+	  
+		<action name="bangdingemail" class="homeInfoSettingAction"
+			method="bangdingemail">
+			<result name="success">
+				/WEB-INF/page/front/wdzh-yxbd-index.jsp
+			</result>
+			<result name="login" type="redirect">userInit.do</result>
+		</action>
+	
+		<action name="reg" class="frontLongRegisterAction"
+			method="regInit">
+			<result name="success">
+				/WEB-INF/page/front/zhuce.jsp
+			</result>
+			<result name="login" type="redirect">userInit.do</result>
+		</action>
+		<action name="register" class="frontLongRegisterAction"	method="register">
+		</action>
+		<!-- !!! -->
+		<action name="login" class="frontLongRegisterAction"
+			method="loginInit">
+			<result name="success">
+				/WEB-INF/page/front/login.jsp
+			</result>
+			<result name="login" type="redirect">userInit.do</result>
+			<result name="zhanghao" type="redirect">home.do</result>
+		</action>
+		<!-- 用户登录处理Action -->
+	<action name="logining" class="frontLongRegisterAction" method="login">
+	      <result>/WEB-INF/page/front/success.jsp</result>
+	      <result name="input">/WEB-INF/page/front/login.jsp</result>
+		</action>
+		
+		<!-- User sync to Ucenter action-->
+	    <action name="synctoucenter" class="frontLongRegisterAction"
+	      method="syncUCenterLogin">
+	      <result name="input">/WEB-INF/page/front/login.jsp</result>
+	    </action>
+		
+		<!-- 用户注册时候用户名检测 -->
+		<action name="ajaxCheckRegister"  class="frontLongRegisterAction" method="ajaxCheckRegister">
+		</action>
+		<!--add by houli 判断推荐人是否有效 queryValidRecommer -->
+		<action name="queryValidRecommer" class="frontLongRegisterAction"
+			method="queryValidRecommer">
+		</action>
+		<action name="ajaxCheckLog"  class="frontLongRegisterAction" method="ajaxChecklogin">
+		</action>
+		
+			<action name="userInit" class="frontUserAction" method="userInit">
+			<result name="success">index.jsp</result>
+		</action>
+		<!-- 邮箱验证 -->
+	 <action name="verificationEmial" class="frontLongRegisterAction" method="verificationEmial">
+	    <result>/WEB-INF/page/usercenter/usermassge.jsp</result>
+	 </action>
+	 <!-- 注册后的邮箱提示验证 -->
+	 	 <action name="msgtip" class="frontLongRegisterAction" method="tip">
+	    <result>/WEB-INF/page/usercenter/yxjihuo.jsp</result>
+	 </action>
+	 <!-- 重新发送激活邮件  -->
+	  <action name="reActivateEmail" class="frontLongRegisterAction" method="reActivateEmail">
+	    <result name="input" >index.jsp</result>
+	    <result name="success" type="redirectAction">reSend.do?id=${r_userId}</result>
+	 </action>
+	 <!-- 从新发送邮件 -->
+	 	 <action name="reSend" class="frontLongRegisterAction" method="reSendEmail">
+	    <result>/WEB-INF/page/usercenter/yxjihuo.jsp</result>
+	 </action>
+	 <!-- 用户登录后跳转的页面 -->
+	   <action name="loginAfter" class="frontLongRegisterAction" method="jumpUser">
+	    <result>/WEB-INF/page/usercenter/user_infomation.jsp</result>
+	 </action>
+	 <!--   用户登录后跳转的页面
+	  <action name="loginAfter" class="frontLongRegisterAction" method="jumpUser">
+	    <result>/WEB-INF/page/usercenter/wdzh.jsp</result>
+	 </action>
+	 -->
+	 <!-- 忘记密码 -->
+	  <action name="forgetpassword" class="frontLongRegisterAction" method="forget">
+	    <result>/WEB-INF/page/usercenter/user_mima.jsp</result>
+	 </action>
+	   <action name="forgetpasswordsenEml" class="frontLongRegisterAction" method="forgetSendEMl">
+	 </action>
+	 <!-- 点击邮箱连接后修改密码 -->
+	 <action name="changePassword" class="frontLongRegisterAction" method="changePasswordfor">
+	    <result>/WEB-INF/page/usercenter/user_change_password.jsp</result>
+	    <result name="index">/WEB-INF/page/usercenter/user_mima.jsp</result>
+	 </action>
+	 <!-- 修改密码 -->
+	 	 <action name="updatePassword" class="frontLongRegisterAction" method="updatechangePasswordfor">
+	    <result>/WEB-INF/page/usercenter/user_change_password.jsp</result>
+	    <result name="index" type="redirect">forgetpassword.do</result>
+	 </action>
+	 
+	 
+	 
+	</package>
+    <package name="logout" extends="struts-default" namespace="/">
+       <action name="logout" class="frontLongRegisterAction" method="logout"></action>
+   		<action name="noPermission" class="frontLongRegisterAction" method="noPermission">
+	   		<result>/WEB-INF/page/no_permission.jsp</result>
+       </action>
+    </package>
+    
+    <!-- 论坛 -->
+    <package name="bbs" extends="struts-default" namespace="/">
+       <action name="loginBBS" class="frontLongRegisterAction" method="loginBBS"></action>
+    </package>
+    
+</struts>

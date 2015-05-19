@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE struts PUBLIC
+    "-//Apache Software Foundation//DTD Struts Configuration 2.0//EN"
+    "http://struts.apache.org/dtds/struts-2.0.dtd">
+<struts>
+	<package name="seoConfig" extends="admin-default" namespace="/admin">
+		<global-results>
+			<result name="error">/500.jsp</result>
+		</global-results>
+		<global-exception-mappings>
+			<exception-mapping result="error" exception="java.lang.Exception"></exception-mapping>
+		</global-exception-mappings>
+		<action name="querySEOConfig" class="seoconfigaction" method="querySEOConfig">
+			<result name="success">/WEB-INF/page/admin/seoConfig.jsp
+			</result>
+		</action>
+		<action name="updateSEOConfig" class="seoconfigaction" method="updateSEOConfig">
+			<result name="success" type="redirect">querySEOConfig.do</result>
+		</action>
+		<action name="queryRegistCode" class="seoconfigaction" method="queryRegistCode">
+			<result name="success">/WEB-INF/page/admin/registcode_index.jsp</result>
+		</action>
+		<action name="updateRegistCode" class="seoconfigaction" method="updateRegistCode">
+			<result name="success">queryRegistCode.do</result>
+		</action>
+		<action name="updateAppOptionsInit" class="seoconfigaction" method="updateAppOptionsInit">
+			<result name="success">/WEB-INF/page/admin/appOption_index.jsp
+			</result>
+		</action>
+		
+		<action name="updateAppOptions" class="seoconfigaction" method="updateAppOptions">
+		</action>
+		
+	</package>
+</struts>

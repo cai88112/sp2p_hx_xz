@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE struts PUBLIC
+    "-//Apache Software Foundation//DTD Struts Configuration 2.0//EN"
+    "http://struts.apache.org/dtds/struts-2.0.dtd">
+<struts>
+	<package name="ecpsspayinfo" extends="pay-default" namespace="/">
+		
+		<action name="escpssPayment" class="ecpssPaymentAction" method="escpssPayment">
+			<result name="input" type="redirect">voucherCenterInit.do</result>
+			<result name="noLogin" type="redirect">login.do</result>
+		</action>
+		
+	</package>
+	<package name="ecpsspayinfoE" extends="front-default" namespace="/">
+		<action name="frontEccpssMerUrl" class="ecpssPaymentAction" method="frontEccpssMerUrl">
+			<result name="success" type="redirectAction">rechargeInit.do</result>
+		</action>
+		<action name="backgroundEccpssMerUrl" class="ecpssPaymentAction" method="backgroundEccpssMerUrl">
+		</action>
+		<action name="merUrl" class="ecpssPaymentAction" method="merUrl">
+		</action>
+	</package>
+</struts>
+
+

@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE struts PUBLIC
+    "-//Apache Software Foundation//DTD Struts Configuration 2.0//EN"
+    "http://struts.apache.org/dtds/struts-2.0.dtd">
+<struts>
+
+	<package name="unactivated" extends="admin-default" namespace="/admin">
+		<global-results>
+			<result name="error">/500.jsp</result>
+		</global-results>
+		<global-exception-mappings>
+			<exception-mapping result="error" exception="java.lang.Exception"></exception-mapping>
+		</global-exception-mappings>
+		<!-- 用户未激活 -->
+
+		<!--
+			<action name="queryPersonworkmsg" class="validateAction"
+			method="queryWork"> <result name="success">
+			/WEB-INF/page/admin/ususer_workInf_admin.jsp </result> </action>
+		-->
+		<!-- 查询未激活的初始化  -->
+		<action name="unactivatedindex" class="unactivatedAction"
+			method="unactivatedindex">
+			<result name="success">
+				/WEB-INF/page/admin/user-unactivated-index.jsp
+			</result>
+		</action>
+		<!-- 查询未激活的详细列表 -->
+		<action name="unactivatedinfo" class="unactivatedAction"
+			method="unactivatedinfo">
+			<result name="success">
+				/WEB-INF/page/admin/user-unactivated-list.jsp
+			</result>
+		</action>
+		<action name="updateActicate" class="unactivatedAction" method="updateUserActivate">
+			<result name="success">
+				/WEB-INF/page/admin/user-unactivated-index.jsp
+			</result>
+		</action>
+	</package>
+</struts>

@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project-module
+  type="WEB"
+  name="sp2p_hx_xz"
+  id="myeclipse.1361961652745"
+  context-root="/sp2p_hx_xz"
+  j2ee-spec="5.0"
+  archive="sp2p_hx_xz.war">
+  <attributes>
+    <attribute name="webrootdir" value="/WebRoot" />
+  </attributes>
+</project-module>
+

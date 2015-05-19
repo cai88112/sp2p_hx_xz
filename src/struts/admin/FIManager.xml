@@ -1,0 +1,279 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE struts PUBLIC
+    "-//Apache Software Foundation//DTD Struts Configuration 2.0//EN"
+    "http://struts.apache.org/dtds/struts-2.0.dtd">
+<struts>
+	<package name="FIManager" extends="admin-default" namespace="/admin">
+		<global-results>
+			<result name="error">/500.jsp</result>
+		</global-results>
+		<global-exception-mappings>
+			<exception-mapping result="error" exception="java.lang.Exception"></exception-mapping>
+		</global-exception-mappings>
+		<!-- 财务管理配置文件 -->
+
+
+		<!-- 用户资金管理 -->
+		<action name="userFundInit" class="userFundAction" method="userFundInit">
+			<result name="success">/WEB-INF/page/admin/FI-userFund-manage-index.jsp
+			</result>
+		</action>
+
+		<action name="queryUserFundList" class="userFundAction" method="queryUserFundList">
+			<result name="success">/WEB-INF/page/admin/FI-userFund-manage-list.jsp
+			</result>
+		</action>
+
+		<action name="queryUserFundWithdrawInit" class="userFundAction"
+			method="userFundWithdrawInit">
+			<result name="success">/WEB-INF/page/admin/FI-userFund-tx-index.jsp
+			</result>
+		</action>
+
+		<action name="queryUserFundRechargeInit" class="userFundAction"
+			method="userFundWithdrawInit">
+			<result name="success">/WEB-INF/page/admin/FI-userFund-cz-index.jsp
+			</result>
+		</action>
+
+		<action name="queryUserFundRechargeList" class="userFundAction"
+			method="queryUserFundRechargeList">
+			<result name="success">/WEB-INF/page/admin/FI-userFund-cz-list.jsp
+			</result>
+		</action>
+
+		<action name="exportUserFundRecharge" class="userFundAction"
+			method="exportUserFundRecharge">
+
+		</action>
+
+		<action name="exportAllUserFundList" class="userFundAction"
+			method="exportAllUserFundList">
+
+		</action>
+
+
+		<!-- 导出提现记录 -->
+		<action name="exportUserFundWithdraw" class="userFundAction"
+			method="exportUserFundWithdraw">
+
+		</action>
+
+		<action name="queryUserFundWithdrawList" class="userFundAction"
+			method="queryUserFundWithdrawList">
+			<result name="success">/WEB-INF/page/admin/FI-userFund-tx-list.jsp
+			</result>
+		</action>
+
+		<action name="queryUserFundrecordInit" class="userFundAction"
+			method="userFundRecordInit">
+			<result name="success">/WEB-INF/page/admin/FI-userFund-zjjl-index.jsp
+			</result>
+		</action>
+
+		<action name="queryUserFundRecordList" class="userFundAction"
+			method="queryUserFundRecordList">
+			<result name="success">/WEB-INF/page/admin/FI-userFund-zjjl-list.jsp
+			</result>
+		</action>
+
+		<action name="queryAllUserFundRecordInit" class="userFundAction"
+			method="queryAllUserFundRecordInit">
+			<result name="success">/WEB-INF/page/admin/FI-userFund-zjdetail-index.jsp
+			</result>
+		</action>
+
+		<action name="queryAllUserFundRecordList" class="userFundAction"
+			method="queryAllUserFundRecordList">
+			<result name="success">/WEB-INF/page/admin/FI-userFund-zjdetail-list.jsp
+			</result>
+		</action>
+		<!-- 充值记录 -->
+		<action name="queryRechargeRecordInit" class="fiManageAction"
+			method="queryRechargeRecordInit">
+			<result name="success">/WEB-INF/page/admin/FI-recharge-record-index.jsp
+			</result>
+		</action>
+
+		<action name="queryRechargeRecordList" class="fiManageAction"
+			method="queryRechargeRecordList">
+			<result name="success">/WEB-INF/page/admin/FI-recharge-record-list.jsp
+			</result>
+		</action>
+		<!-- 导出充值记录 -->
+		<action name="exportRechargeRecord" class="fiManageAction"
+			method="exportRechargeRecord">
+
+		</action>
+
+		<!-- 导出第一次充值记录 -->
+		<action name="exportRechargeFirst" class="fiManageAction"
+			method="exportRechargeFirst">
+
+		</action>
+		<action name="queryRechargeFirstInit" class="fiManageAction"
+			method="queryRechargeRecordInit">
+			<result name="success">/WEB-INF/page/admin/FI-recharge-first-index.jsp
+			</result>
+		</action>
+
+		<action name="queryRechargeFirstList" class="fiManageAction"
+			method="queryRechargeFirstList">
+			<result name="success">/WEB-INF/page/admin/FI-recharge-first-list.jsp
+			</result>
+		</action>
+
+		<action name="queryOneFirstChargeDetails" class="fiManageAction"
+			method="queryOneFirstChargeDetails">
+			<result name="success">/WEB-INF/page/admin/FI-recharge-first-show.jsp
+			</result>
+		</action>
+
+		<action name="queryOneChargeDetails" class="fiManageAction"
+			method="queryOneChargeDetails">
+			<result name="success">/WEB-INF/page/admin/FI-recharge-first-show.jsp
+			</result>
+		</action>
+
+		<!-- 充值提现审核 -->
+		<action name="queryAllWithdrawInit" class="fiManageAction"
+			method="queryRechargeRecordInit">
+			<result name="success">/WEB-INF/page/admin/FI-withdraw-index.jsp
+			</result>
+		</action>
+
+		<action name="queryAllWithdrawList" class="fiManageAction"
+			method="queryAllWithdrawList">
+			<result name="success">/WEB-INF/page/admin/FI-withdraw-list.jsp</result>
+		</action>
+		<!-- 导出全部提现 -->
+		<action name="exportAllWithdraw" class="fiManageAction" method="exportAllWithdraw">
+
+		</action>
+
+		<action name="queryCheckInit" class="fiManageAction" method="queryRechargeRecordInit">
+			<result name="success">/WEB-INF/page/admin/FI-withdraw-check-index.jsp
+			</result>
+		</action>
+
+		<action name="querySuccessInit" class="fiManageAction" method="queryRechargeRecordInit">
+			<result name="success">/WEB-INF/page/admin/FI-withdraw-success-index.jsp
+			</result>
+		</action>
+
+		<action name="queryTransInit" class="fiManageAction" method="queryRechargeRecordInit">
+			<result name="success">/WEB-INF/page/admin/FI-withdraw-trans-index.jsp
+			</result>
+		</action>
+
+		<action name="queryFailInit" class="fiManageAction" method="queryRechargeRecordInit">
+			<result name="success">/WEB-INF/page/admin/FI-withdraw-fail-index.jsp
+			</result>
+		</action>
+
+		<action name="queryTransList" class="fiManageAction" method="queryAllWithdrawList">
+			<result name="success">/WEB-INF/page/admin/FI-withdraw-trans-list.jsp
+			</result>
+		</action>
+
+		<action name="queryWithdrawInfo" class="fiManageAction" method="queryWithdrawInfo">
+			<result name="success">/WEB-INF/page/admin/FI-withdraw-index-checkinfo.jsp
+			</result>
+		</action>
+
+		<action name="updateWithdrawCheck" class="fiManageAction"
+			method="updateWithdrawCheck">
+		</action>
+
+		<action name="updateWithdrawTransfer" class="fiManageAction"
+			method="updateWithdrawTransfer">
+		</action>
+
+		<action name="queryWithdrawTransInfo" class="fiManageAction"
+			method="queryWithdrawTransInfo">
+			<result name="success">/WEB-INF/page/admin/FI-withdraw-index-transinfo.jsp
+			</result>
+		</action>
+
+		<action name="queryWithdrawShowInfo" class="fiManageAction"
+			method="queryWithdrawTransInfo">
+			<result name="success">/WEB-INF/page/admin/FI-withdraw-index-showinfo.jsp
+			</result>
+		</action>
+
+		<!-- 充值管理
+		<action name="queryUserCashListInit" class="fiManageAction"
+			method="queryRechargeRecordInit">
+			<result name="success">/WEB-INF/page/admin/FI-recharge-cash-index.jsp
+			</result>
+		</action>
+		 -->
+
+		<action name="queryUserCashList" class="fiManageAction" method="queryUserCashList">
+			<result name="success">/WEB-INF/page/admin/FI-recharge-cash-list.jsp
+			</result>
+		</action>
+
+		<action name="queryBackCashInit" class="fiManageAction" method="queryBackCashInit">
+			<result name="success">/WEB-INF/page/admin/FI-recharge-rd-index.jsp
+			</result>
+		</action>
+
+		<action name="queryBackCashList" class="fiManageAction" method="queryBackCashList">
+			<result name="success">/WEB-INF/page/admin/FI-recharge-rd-list.jsp
+			</result>
+		</action>
+
+		<action name="addBackRechargeInit" class="fiManageAction"
+			method="addBackRechargeInit">
+			<result name="success">/WEB-INF/page/admin/FI-recharge-rd-addRecharge.jsp
+			</result>
+		</action>
+
+		<action name="addBackWithdrawInit" class="fiManageAction"
+			method="addBackWithdrawInit">
+			<result name="success">/WEB-INF/page/admin/FI-recharge-rd-addWithdraw.jsp
+			</result>
+		</action>
+
+		<action name="addBackWithdraw" class="fiManageAction" method="addBackWithdraw">
+			<result name="input">/WEB-INF/page/admin/FI-recharge-rd-addWithdraw.jsp
+			</result>
+			<result name="success" type="redirect">queryBackCashInit.do?userId=${userId}
+			</result>
+		</action>
+
+		<action name="addBackRecharge" class="fiManageAction" method="addBackRecharge">
+			<result name="input">/WEB-INF/page/admin/FI-recharge-rd-addRecharge.jsp
+			</result>
+			<result name="success" type="redirect">queryBackCashInit.do?userId=${userId}
+			</result>
+		</action>
+
+		<action name="updateWithdraws" class="fiManageAction" method="updateWithdraws">
+			<result name="success" type="redirect">queryTransInit.do</result>
+		</action>
+
+		<action name="queryR_WShow" class="fiManageAction" method="queryR_WShow">
+			<result name="success">/WEB-INF/page/admin/FI-recharge-rd-show.jsp
+			</result>
+		</action>
+
+		<action name="queryBackCashDetailsInit" class="fiManageAction"
+			method="queryBackCashDetailsInit">
+			<result name="success">/WEB-INF/page/admin/FI-recharge-rd-details-index.jsp
+			</result>
+		</action>
+
+		<action name="queryBackCashDetails" class="fiManageAction"
+			method="queryBackCashList">
+			<result name="success">/WEB-INF/page/admin/FI-recharge-rd-details-list.jsp
+			</result>
+		</action>
+		<!-- 导出充值明细 -->
+		<action name="exportBackCash" class="fiManageAction" method="exportBackCash">
+
+		</action>
+
+	</package>
+</struts>

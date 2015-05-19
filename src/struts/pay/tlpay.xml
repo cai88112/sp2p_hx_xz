@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE struts PUBLIC
+    "-//Apache Software Foundation//DTD Struts Configuration 2.0//EN"
+    "http://struts.apache.org/dtds/struts-2.0.dtd">
+<struts>
+<!-- 通联互联网支付的配置信息 -->
+	<package name="tlpayinfo" extends="pay-default" namespace="/">
+		
+		<action name="tlpayPayment" class="tlPaymentAction" method="tlpayPayment">
+			<result name="input" type="redirect">voucherCenterInit.do</result>
+			<result name="noLogin" type="redirect">login.do</result>
+		</action>
+		
+	</package>
+	<package name="tlpaybackinfo" extends="front-default" namespace="/">
+		<action name="receiveUrl" class="tlPaymentAction" method="frontMerUrl">
+			<result name="success" type="redirectAction">rechargeInit.do</result>
+		</action>
+		<action name="pickupUrl" class="tlPaymentAction" method="backgroundMerUrl">
+		</action>
+	</package>
+</struts>
+
+

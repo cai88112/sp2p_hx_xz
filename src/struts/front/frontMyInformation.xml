@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE struts PUBLIC
+    "-//Apache Software Foundation//DTD Struts Configuration 2.0//EN"
+    "http://struts.apache.org/dtds/struts-2.0.dtd">
+<struts>
+	<package name="MyInformation" extends="login-default"
+		namespace="/">
+		<global-results>
+			<result name="error">/500.jsp</result>
+		</global-results>
+		<global-exception-mappings>
+			<exception-mapping result="error" exception="java.lang.Exception"></exception-mapping>
+		</global-exception-mappings>
+		<action name="owerInformationInit" class="FrontMyInformation"
+			method="queryBaseData">
+			<result name="success">
+				/WEB-INF/page/front/wdzh-grsz-index.jsp
+			</result>
+		</action>
+
+
+		<action name="addInformationDetail" class="FrontMyInformation"
+			method="updateUserBaseData">
+		</action>
+
+		<action name="addWorkDetail" class="FrontMyInformation" method="updateUserWorkData">
+		</action>
+
+		<action name="queryWorkInit" class="FrontMyInformation" method="queryWorkInit">
+			<result name="success">/WEB-INF/page/front/wdzh-gzrz-index.jsp</result>
+		</action>
+
+		<action name="queryBasicInit" class="FrontMyInformation"
+			method="queryBasicInit">
+			<result name="success">/WEB-INF/page/front/user_basicinfo.jsp</result>
+		</action>
+
+		<action name="updatexgmm" class="FrontMyInformation" method="updatePassword">
+			<result name="success">/WEB-INF/page/front/wdzh-xgmm-index.jsp</result>
+		</action>
+		<action name="boundcellphone" class="FrontMyInformation"
+			method="updatexgmm">
+			<result name="success">/WEB-INF/page/front/wdzh-sjbd-index.jsp</result>
+			<result name="person" type="redirectAction">owerInformationInit.do</result>
+		</action>
+		<action name="szform" class="FrontMyInformation" method="szform">
+			<result name="success">/WEB-INF/page/front/wdzh-tzsz-index.jsp</result>
+		</action>
+		<action name="yhbound" class="FrontMyInformation" method="updatexgmm">
+			<result name="success">/WEB-INF/page/front/wdzh-yhbg-index.jsp</result>
+			<result name="person" type="redirectAction">owerInformationInit.do</result>
+		</action>
+
+		<action name="queryarealist" class="FrontMyInformation" method="queryarealist">
+		</action>
+
+		<!-- 添加邮箱 -->
+		<action name="addEmails" class="homeInfoSettingAction" method="addEmails">
+		</action>
+		<!-- 邮箱管理 left menu -->
+		<action name="emailManagerInit" class="homeInfoSettingAction"
+			method="emailManagerInit">
+			<result name="success">
+				/WEB-INF/page/front/wdzh-yxbd-index.jsp
+			</result>
+		</action>
+		<!-- 邮箱管理 left menu -->
+		<action name="SendUserEmailSet" class="homeInfoSettingAction"
+			method="SendUserEmailSet">
+		</action>
+	</package>
+</struts>

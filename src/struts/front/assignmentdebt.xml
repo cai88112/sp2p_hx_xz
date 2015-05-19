@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE struts PUBLIC
+    "-//Apache Software Foundation//DTD Struts Configuration 2.0//EN"
+    "http://struts.apache.org/dtds/struts-2.0.dtd">
+<struts>
+	<package name="assignmentdebt" extends="struts-default"
+		namespace="/">
+		<global-results>
+			<result name="error">/500.jsp</result>
+		</global-results>
+		<global-exception-mappings>
+			<exception-mapping result="error" exception="java.lang.Exception"></exception-mapping>
+		</global-exception-mappings>
+		<action name="queryFrontAllDebt" class="frontDebtAction"
+			method="queryFrontAllDebt">
+			<result name="success">
+				/WEB-INF/page/front/creditor-index.jsp
+			</result>
+		</action>
+		<action name="queryDebtDetail" class="frontDebtAction" method="queryDebtDetail">
+			<result name="success">
+				/WEB-INF/page/front/creditor-detail.jsp
+			</result>
+		</action>
+
+		<action name="debtMSGInit" class="frontDebtAction" method="debtMSGInit">
+			<result name="success">/WEB-INF/page/front/debt-message-list.jsp
+			</result>
+			<result name="404" type="redirect">404.jsp</result>
+		</action>
+		<action name="queryAcutionRecordInfo" class="frontDebtAction"
+			method="queryAcutionRecordInfo">
+			<result name="success">/WEB-INF/page/front/debt-auction-records.jsp
+			</result>
+			<result name="404" type="redirect">404.jsp</result>
+		</action>
+		<action name="queryFrontSuccessDebt" class="frontDebtAction"
+			method="queryFrontSuccessDebt">
+			<result name="success">/WEB-INF/page/front/creditor-success-index.jsp
+			</result>
+			<result name="404" type="redirect">404.jsp</result>
+		</action>
+
+	</package>
+
+	<package name="assignmentdebtlogin" extends="login-default"
+		namespace="/">
+		<action name="addDebtMSG" class="frontDebtAction" method="addDebtMSG">
+			<result name="success">/WEB-INF/page/front/debt-message-submit.jsp
+			</result>
+			<result name="input">/WEB-INF/page/front/debt-message-submit.jsp
+			</result>
+			<result name="nologin">/index.jsp</result>
+		</action>
+		<action name="auctingDebtInit" class="frontDebtAction" method="auctingDebtInit">
+			<result name="success">/WEB-INF/page/front/creditor-auction.jsp</result>
+
+		</action>
+		<action name="addAuctingDebt" class="frontDebtAction" method="addAuctingDebt">
+			<result name="input">/WEB-INF/page/front/creditor-auction-add.jsp
+			</result>
+
+		</action>
+
+	</package>
+
+</struts>

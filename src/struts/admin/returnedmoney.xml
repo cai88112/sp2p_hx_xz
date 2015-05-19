@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE struts PUBLIC
+    "-//Apache Software Foundation//DTD Struts Configuration 2.0//EN"
+    "http://struts.apache.org/dtds/struts-2.0.dtd">
+<struts>
+<package name="returnedmoneyInfo" extends="admin-default" namespace="/admin">
+		<global-results>
+			<result name="error">/500.jsp</result>
+		</global-results>
+		<global-exception-mappings>
+			<exception-mapping result="error" exception="java.lang.Exception"></exception-mapping>
+		</global-exception-mappings>
+		<action name="returnedmoneyPageInit" class="returnedmoneyAction" method="returnedmoneyPageInit">
+			<result name="success">/WEB-INF/page/admin/returnedmoneyPageInit.jsp</result>
+		</action>
+		
+		<action name="queryreturnedmoneyDetail" class="returnedmoneyAction" method="queryreturnedmoneyDetail">
+			<result name="success">/WEB-INF/page/admin/returnedmoneyDetail.jsp</result>
+		</action>
+		
+		<!-- 导出回款续投列表 -->
+		<action name="exportforReturnedmoneyDetail" class="returnedmoneyAction"
+			method="exportforReturnedmoneyDetail">
+		</action>
+	</package>
+
+</struts>

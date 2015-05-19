@@ -1,0 +1,236 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE struts PUBLIC
+    "-//Apache Software Foundation//DTD Struts Configuration 2.0//EN"
+    "http://struts.apache.org/dtds/struts-2.0.dtd">
+<struts>
+
+	<package name="ipay" extends="struts-default" namespace="/">
+		<!-- <action name="createIpsAcct" class="iPaymentAction" method="createIpsAcct"> 
+			<result name="success">/WEB-INF/page/front/creditor-view.jsp</result> </action> -->
+		<!-- 开户 -->
+		<action name="createIpsAcct" class="qianduoduoPayAction"
+			method="registerbind">
+			<result name="success">/WEB-INF/page/qianduoduoform/loanregisterbind.jsp
+			</result>
+		</action>
+		<action name="registerbindReturn" class="qianduoduoPayReturnAction"
+			method="registerbindReturn">
+		</action>
+
+		<action name="registerbindNotify" class="qianduoduoPayReturnAction"
+			method="registerbindNotify">
+		</action>
+		<!-- 充值 -->
+		<!-- <action name="ipayPayment" class="iPaymentAction" method="ipayPayment"> 
+			</action> -->
+		<!-- <action name="ipayPayment" class="qianduoduoPayAction" method="loanRecharge"> 
+			</action> -->
+
+
+		<!-- 投标(普通标) -->
+		<action name="tenderTrade" class="qianduoduoPayAction" method="financeInvest">
+			<!-- <result name="success">/WEB-INF/page/front/finance-invest-submit.jsp 
+				</result> -->
+			<result name="success">/WEB-INF/page/qianduoduoform/loantransfer.jsp
+			</result>
+			<result name="input">/WEB-INF/page/front/finance-invest-submit.jsp
+			</result>
+			<result name="noPortUser" type="redirect">portUserAcct.do</result>
+			<result name="nologin">/index.jsp</result>
+		</action>
+		<action name="tenderTradeReturn" class="qianduoduoPayReturnAction"
+			method="tenderTradeReturn">
+		</action>
+
+		<action name="tenderTradeNotify" class="qianduoduoPayReturnAction"
+			method="tenderTradeNotify">
+		</action>
+
+		<action name="reCreateIpsAcct" class="iPaymentAction" method="reCreateIpsAcct">
+			<result name="success">/WEB-INF/page/front/protUserAcct.jsp</result>
+		</action>
+
+		<!-- 提现 -->
+		<!-- <action name="withdrawalMon" class="iPaymentAction" method="withdrawalMon"> 
+			</action> -->
+		<action name="withdrawalMon" class="qianduoduoPayAction"
+			method="withdrawalMon">
+			<result name="success">/WEB-INF/page/qianduoduoform/loanwithdraws.jsp
+			</result>
+		</action>
+
+		<action name="loanwithdrawsReturn" class="qianduoduoPayReturnAction"
+			method="loanwithdrawsReturn">
+		</action>
+		<action name="loanwithdrawsNotify" class="qianduoduoPayReturnAction"
+			method="loanwithdrawsNotify">
+		</action>
+
+
+		<!-- 投标申请(普通标) -->
+		<!-- <action name="tenderTrade" class="iPaymentAction" method="financeInvest"> 
+			<result name="success">/WEB-INF/page/front/finance-invest-submit.jsp </result> 
+			<result name="input">/WEB-INF/page/front/finance-invest-submit.jsp </result> 
+			<result name="noPortUser" type="redirect">portUserAcct.do</result> <result 
+			name="nologin">/index.jsp</result> </action> -->
+		<!-- 投标申请(流转标) -->
+		<action name="tenderCirculationTrade" class="iPaymentAction"
+			method="tenderCirculationTrade">
+		</action>
+		<action name="reTCTrade" class="iPaymentAction" method="reTCTrade"></action>
+		<!-- 自动投标签约 -->
+		<action name="pautomaticBidSet" class="iPaymentAction" method="pautomaticBidSet">
+		</action>
+		<action name="repautomaticBidSet" class="iPaymentAction"
+			method="repautomaticBidSet">
+		</action>
+		<!-- 还款 -->
+		<!-- <action name="toRepayment" class="iPaymentAction" method="toRepayment"> 
+			</action> -->
+
+		<action name="toRepayment" class="qianduoduoPayAction" method="toRepayment">
+			<result name="success">/WEB-INF/page/qianduoduoform/loantransfer.jsp
+			</result>
+			<result name="nologin">/index.jsp</result>
+		</action>
+
+		<action name="toRepaymentReturn" class="qianduoduoPayReturnAction"
+			method="toRepaymentReturn">
+		</action>
+
+		<action name="toRepaymentNotify" class="qianduoduoPayReturnAction"
+			method="toRepaymentNotify">
+		</action>
+
+
+	</package>
+
+	<package name="ipaybackinfo" extends="front-default" namespace="/">
+		<action name="merChanUrl" class="iPaymentAction" method="merChanUrl">
+			<result name="success" type="redirectAction">rechargeInit.do</result>
+		</action>
+		<action name="merServerUrl" class="iPaymentAction" method="merServerUrl">
+		</action>
+		<action name="remerServerUrl" class="iPaymentAction" method="remerServerUrl">
+		</action>
+		<action name="reFinanceInvestUrl" class="iPaymentAction"
+			method="reFinanceInvestUrl">
+		</action>
+		<action name="retoRepayment" class="iPaymentAction" method="retoRepayment">
+		</action>
+	</package>
+
+	<package name="userA" extends="login-default" namespace="/">
+		<action name="portUserAcct" class="iPaymentAction" method="portUserAcct">
+			<result name="success">/WEB-INF/page/front/protUserAcct.jsp</result>
+			<result name="querBaseData" type="chain">
+				<param name="adminUser">/</param>
+				<param name="actionName">querBaseData</param>
+			</result>
+			<result name="querWorkData" type="chain">
+				<param name="adminUser">/</param>
+				<param name="actionName">querWorkData</param>
+			</result>
+			<result name="quervipData" type="chain">
+				<param name="adminUser">/</param>
+				<param name="actionName">quervipData</param>
+			</result>
+			<result name="login">index.jsp</result>
+		</action>
+	</package>
+	<package name="ipayinfo" extends="pay-default" namespace="/">
+		<global-results>
+			<result name="error">/500.jsp</result>
+		</global-results>
+		<global-exception-mappings>
+			<exception-mapping result="error" exception="java.lang.Exception"></exception-mapping>
+		</global-exception-mappings>
+
+		<!-- 充值 -->
+		<action name="ipayPayment" class="qianduoduoPayAction" method="loanRecharge">
+			<result name="noLogin" type="redirect">login.do</result>
+			<result name="success">/WEB-INF/page/qianduoduoform/loanrecharge.jsp
+			</result>
+		</action>
+		<action name="loanRechargeReturn" class="qianduoduoPayReturnAction"
+			method="loanRechargeReturn">
+		</action>
+
+		<action name="loanRechargeNotify" class="qianduoduoPayReturnAction"
+			method="loanRechargeNotify">
+		</action>
+		<!-- <action name="ipayPayment" class="iPaymentAction" method="ipayPayment"> 
+			<result name="input" type="redirect">voucherCenterInit.do</result> <result 
+			name="noLogin" type="redirect">login.do</result> </action> -->
+
+	</package>
+	<package name="ipaybackinfo" extends="front-default" namespace="/">
+		<action name="merChanUrl" class="iPaymentAction" method="merChanUrl">
+			<result name="success" type="redirectAction">rechargeInit.do</result>
+		</action>
+		<action name="merServerUrl" class="iPaymentAction" method="merServerUrl">
+		</action>
+		<action name="reFinanceInvestUrl" class="iPaymentAction"
+			method="reFinanceInvestUrl">
+		</action>
+	</package>
+	<!-- 后台调用 -->
+	<package name="qianduoduoback" extends="admin-default"
+		namespace="/admin">
+		<!-- 审核接口 -->
+		<action name="updateBorrowFullScale" class="qianduoduoPayAction"
+			method="checkTrade">
+			<result name="success">/WEB-INF/page/qianduoduoform/loantransferaudit.jsp
+			</result>
+			<result name="nologin">/WEB-INF/page/admin/frame/login.jsp</result>
+		</action>
+	</package>
+	<package name="qianduoduo" extends="struts-default" namespace="/">
+		<!-- 审核接口 -->
+		<action name="loantransferauditReturn" class="qianduoduoPayReturnAction"
+			method="loantransferauditReturn">
+		</action>
+		<action name="loantransferauditNotify" class="qianduoduoPayReturnAction"
+			method="loanRechargeNotify">
+		</action>
+		<!-- 老米补偿金额接口 -->
+		<action name="platformCompensateNotify" class="qianduoduoPayReturnAction"
+			method="platformCompensateNotify">
+		</action>
+			<action name="platformCompensateReturn" class="qianduoduoPayReturnAction"
+			method="platformCompensateReturn">
+		</action>
+		<!-- 回款续投金额接口 -->
+		<action name="returnedmoneyNotify" class="qianduoduoPayReturnAction"
+			method="returnedmoneyNotify">
+		</action>
+	</package>
+
+	<!-- 异步接口 -->
+	<package name="iPaymentAsyncAction" extends="struts-default"
+		namespace="/">
+		<!-- 开户异步通知接口 -->
+		<action name="reAsyncCreateIpsAcct" class="iPaymentAsyncAction"
+			method="reAsyncCreateIpsAcct"></action>
+		<!-- 充值异步通知接口 -->
+		<action name="merAsyncServerUrl" class="iPaymentAsyncAction"
+			method="merAsyncServerUrl"></action>
+		<!-- 自动投标签约回调(异步) -->
+		<action name="reAsyncpautomaticBidSet" class="iPaymentAsyncAction"
+			method="reAsyncpautomaticBidSet"></action>
+		<!-- 还款回调(异步) -->
+		<action name="reAsynctoRepayment" class="iPaymentAsyncAction"
+			method="reAsynctoRepayment"></action>
+		<!-- 提现回调(异步) -->
+		<action name="reAsyncmerServerUrl" class="iPaymentAsyncAction"
+			method="reAsyncmerServerUrl"></action>
+		<!-- 投标申请(非流转标)异步通知接口 -->
+		<action name="reAsyncFinanceInvestUrl" class="iPaymentAsyncAction"
+			method="reAsyncFinanceInvestUrl"></action>
+		<!-- 投标申请(流转标)异步通知接口 -->
+		<action name="reAsyncTCTradeUrl" class="iPaymentAsyncAction"
+			method="reAsyncTCTradeUrl"></action>
+	</package>
+</struts>
+
+
