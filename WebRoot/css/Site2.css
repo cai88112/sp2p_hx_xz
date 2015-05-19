@@ -1,0 +1,14 @@
+﻿@charset "utf-8";
+/* CSS Document */
+body{ font-size:12px;font-family:"微软雅黑"; color:#666666;}
+
+body,p,li,ul,h1,h2,h3,table,td,th,dl,dt,dd,img{ font-weight:normal; margin:0; padding:0; list-style:none; border:0}
+
+.ibaner{ float: right; width:459px; height:295px;  overflow:hidden; position:relative}
+.ibaner li{ float:left; width:459px; float:left}
+#scroll{ width:459px; overflow:hidden; height:295px}
+.scroll li{ float:left}
+.control{ position:absolute; right:8px; bottom:8px}
+.control a{ display:inline-block; cursor:pointer; padding:2px; color:#333; text-align:center; line-height:12px; width:12px; margin:0 3px; height:12px; background:#fff;  opactiy:0.99;filter:alpha(opacity=99);}
+.control a:hover{ background:#ee00000; color:#fff}
+.control .cur{ background:#ee0000;color:#fff}

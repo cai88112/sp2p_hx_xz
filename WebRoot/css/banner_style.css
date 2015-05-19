@@ -1,0 +1,115 @@
+@charset "utf-8";
+/* CSS Document */
+/*banner*/
+.
+#slides {
+	display: none
+}
+
+.container {
+	margin: 0 auto
+}
+
+/* For tablets & smart phones */
+@media ( max-width : 767px) {
+	body {
+		padding-left: 20px;
+		padding-right: 20px;
+	}
+	.container {
+		width: auto
+	}
+}
+
+/* For smartphones */
+@media ( max-width : 480px) {
+	.container {
+		width: auto
+	}
+}
+
+/* For smaller displays like laptops */
+@media ( min-width : 768px) and (max-width: 979px) {
+	.container {
+		width: 100%
+	}
+}
+
+/* For larger displays */
+@media ( min-width : 1200px) {
+	.container {
+		width: 100%
+	}
+}
+
+#slides {
+	display: none;
+	position: relative;
+}
+
+/*方向图标*/
+#slides .slidesjs-navigation {
+	position: absolute;
+	top: 50%;
+	width: 19px;
+	height: 30px;
+	display: block;
+	z-index: 1010;
+}
+
+#slides .slidesjs-previous {
+	left: 10%;
+	background: url("../images/banner/pre.png") no-repeat;
+}
+
+#slides .slidesjs-next {
+	right: 10%;
+	background: url("../images/banner/next.png") no-repeat;
+}
+
+.slidesjs-pagination {
+	position: absolute;
+	bottom: 20px;
+	margin: 6px 0 0;
+	text-align: center;
+	left: 50%;
+	list-style: none;
+	z-index: 1010;
+	margin: 0 0 0 -50px;
+}
+/*焦点开始*/
+.slidesjs-pagination li {
+	float: left;
+	margin: 0 1px;
+}
+
+.slidesjs-pagination li a {
+	display: block;
+	width: 24px;
+	height: 0px;
+	padding-top: 5px;
+	background: #fff;
+	float: left;
+	overflow: hidden;
+}
+
+.slidesjs-pagination li a.active, .slidesjs-pagination li a:hover.active
+	{
+	background: #ff9c27;
+}
+
+.slidesjs-pagination li a:hover {
+	background: #ff9c27;
+}
+/*焦点结束*/
+#slides a:link, #slides a:visited {
+	color: #333
+}
+
+#slides a:hover, #slides a:active {
+	color: #9e2020
+}
+
+.navbar {
+	overflow: hidden
+}
