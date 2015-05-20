@@ -267,7 +267,7 @@ public class UserService extends BaseService {
 	 */
 	public Long userRegister1(String email, String userName, String password,
 			String refferee, Map<String, Object> userMap, int typeLen,
-			String mobilePhone) throws Exception {
+			String mobilePhone,int isprivate) throws Exception {
 		Connection conn = MySQL.getConnection();
 		int demo = Convert.strToInt(IConstants.ISDEMO, 2);
 		long userId = -1L;
@@ -279,7 +279,7 @@ public class UserService extends BaseService {
 			DataSet ds = new DataSet();
 			List<Object> outParameterValues = new ArrayList<Object>();
 			Procedures.p_user_register(conn, ds, outParameterValues, email,
-					userName, password, refferee, demo, -1, "");
+					userName, password, refferee, demo, -1, "",isprivate);
 			ret = Convert.strToLong(outParameterValues.get(0) + "", -1);
 			map.put("ret", ret + "");
 			map.put("ret_desc", outParameterValues.get(1) + "");

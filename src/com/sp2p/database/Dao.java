@@ -5375,14 +5375,15 @@ public class Dao {
 		public static int p_user_register(Connection conn, DataSet ds,
 				List<Object> outParameterValues, String in_email,
 				String in_username, String in_password, String in_refferee,
-				int in_demo, int out_ret, String out_desc) throws SQLException,
+				int in_demo, int out_ret, String out_desc,int isprivate) throws SQLException,
 				DataException {
 			int result = MySQL.executeProcedure(conn, "`p_user_register`", ds,
 					outParameterValues, new Parameter(Types.VARCHAR,
 							ParameterDirection.IN, in_email), new Parameter(
 							Types.VARCHAR, ParameterDirection.IN, in_username),
 					new Parameter(Types.VARCHAR, ParameterDirection.IN,
-							in_password), new Parameter(Types.VARCHAR,
+							in_password),  new Parameter(Types.INTEGER,
+									ParameterDirection.IN, isprivate),new Parameter(Types.VARCHAR,
 							ParameterDirection.IN, in_refferee), new Parameter(
 							Types.INTEGER, ParameterDirection.IN, in_demo),
 					new Parameter(Types.INTEGER, ParameterDirection.OUT,

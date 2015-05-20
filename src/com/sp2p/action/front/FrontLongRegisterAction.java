@@ -48,19 +48,6 @@ import com.shove.data.DataException;
 import com.shove.security.Encrypt;
 
 
-/*
- * Discuz! Ucenter API for JAVA
- */
-import api.ucenter.Client;
-import api.ucenter.XMLHelper;
-
-import java.util.LinkedList;
-///////////////////////////////////////////
-
-
-import javax.servlet.http.Cookie;
-import javax.servlet.http.HttpServletResponse;
-
 /**
  * 用户注册
  * 
@@ -446,9 +433,17 @@ public class FrontLongRegisterAction extends BaseFrontAction {
 				md5Password = com.shove.security.Encrypt.MD5(md5Password.trim()
 						+ IConstants.PASS_KEY);
 			}
-			// 调用service
-			userId = userService.userRegister1(email, userName, md5Password,
-					refferee, map, typelen, null);// 注册用户 和初始化图片资料
+			
+			String isprivate = SqlInfusionHelper.filteSqlInfusion(paramMap.get("isprivate")); // 小号
+			if(StringUtils.isNotBlank(isprivate)){
+				// 调用service
+				userId = userService.userRegister1(email, userName, md5Password,
+						refferee, map, typelen, null,1);// 注册用户 和初始化图片资料
+			}else{
+				// 调用service
+				userId = userService.userRegister1(email, userName, md5Password,
+						refferee, map, typelen, null,0);// 注册用户 和初始化图片资料
+			}
 			// Map<String, String> lenMap = null;
 			// lenMap = userService.querymaterialsauthtypeCount(); //
 			// 查询证件类型主表有多少种类型
@@ -482,39 +477,6 @@ public class FrontLongRegisterAction extends BaseFrontAction {
 				user.setPassword(password);
 				user.setEmail(email);
 				bbsRegisterService.doRegisterByAsynchronousMode(user);*/
-				
-				
-				///////////////////////////////////////////////////////
-				api.ucenter.Client uc = new api.ucenter.Client();
-				String $returns = uc.uc_user_register(userName, password, email);
-				int $uid = Integer. parseInt ($returns); 
-				if ($uid <= 0) 
-				{
-					if ($uid == -1) { 
-					System. out .print("用户名不合法"); 
-					} 
-					else if ($uid == -2) { 
-					System. out .print("包含要允许注册的词语"); 
-					} 
-					else if ($uid == -3) { 
-					System. out .print("用户名已经存在"); 
-					}
-					else if ($uid == -4) { 
-					System. out .print("Email 格式有误"); 
-					} 
-					else if ($uid == -5) { 
-					System. out .print("Email 不允许注册"); 
-					} 
-					else if ($uid == -6) { 
-					System. out .print("该 Email 已经被注册"); 
-					} 
-					else { 
-					System. out .print("未定义"); 
-					}
-				}
-				System. out .println("id:"+$uid);
-				System. out .println("添加成功！");
-				///////////////////////////
 				
 				
 
@@ -973,72 +935,6 @@ public class FrontLongRegisterAction extends BaseFrontAction {
 	}
 
 	/**
-	 * 同步登录到UCenter
-	 * 
-	 * @return String
-	 * @throws Exception
-	 */
-	public String syncUCenterLogin() throws Exception {
-		String userName = SqlInfusionHelper.filteSqlInfusion(paramMap.get("email")); 
-		String password = SqlInfusionHelper.filteSqlInfusion(paramMap.get("password"));
-		
-		///////////////////// UCenter Login ////////////////////////////
-		Client uc = new Client();
-		String $result = uc.uc_user_login(userName, password);
-		LinkedList<String> rs = XMLHelper.uc_unserialize ($result);
-		
-		
-		if (rs.size()>0){
-			int $uid = Integer. parseInt (rs.get(0));
-			String $username = rs.get(1);
-			String $password = rs.get(2);
-			//String $email = rs.get(3);
-			if ($uid > 0) 
-			{
-				String ucsynloginResult = uc.uc_user_synlogin($uid);
-				HttpServletResponse response = ServletActionContext.getResponse();
-				
-				try
-				{
-					response.addHeader("P3P"," CP=\"CURa ADMa DEVa PSAo PSDo OUR BUS UNI PUR INT DEM STA PRE COM NAV OTC NOI DSP COR\"");
-					Cookie auth = new Cookie("auth", uc.uc_authcode($password+"\t"+$uid , "ENCODE"));
-					auth.setMaxAge(31536000);
-					response.addCookie( auth );
-					Cookie user_cookie = new Cookie("uchome_loginuser", $username );
-					response.addCookie(user_cookie);
-					//ServletHelper.returnStr(response, ucsynloginResult);
-					response.setCharacterEncoding("UTF-8");
-					response.setContentType("text/plain;charset=UTF-8");
-					PrintWriter pw = response.getWriter();
-					pw.print(ucsynloginResult);
-					pw.flush();
-					pw.close();
-				}
-				catch(Exception e)
-				{
-					e.printStackTrace();
-					throw e;
-				}
-			} 
-			else if ($uid == -1) {
-				//用户不存在,或者被删除
-				ServletHelper.returnStr(ServletActionContext.getResponse(), "2");
-			} 
-			else if ($uid == -2) {
-				//密码错 
-				ServletHelper.returnStr(ServletActionContext.getResponse(), "3");
-			} 
-			else {
-				// unknown 未定义
-				ServletHelper.returnStr(ServletActionContext.getResponse(), "6");
-			}
-		}
-		
-		return null;
-	}
-	
-	
-	/**
 	 * 验证邮箱
 	 * 
 	 * @return
@@ -1152,12 +1048,6 @@ public class FrontLongRegisterAction extends BaseFrontAction {
 		session().removeAttribute("bbs");
 		bbsRegisterService.doExitByAsynchronousMode();
 		getOut().print("<script>parent.location.href='login.do';</script>");
-				
-		/////////////////////////////
-		Client uc = new Client();
-		String $ucsynlogout = uc.uc_user_synlogout();
-		//System.out.println("退出成功"+$ucsynlogout);
-		//return $ucsynlogout;
 	}
 
 	public void setSendMailService(SendMailService sendMailService) {
