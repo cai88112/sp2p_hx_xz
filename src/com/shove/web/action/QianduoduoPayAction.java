@@ -9,6 +9,8 @@
 package com.shove.web.action;
 
 import java.math.BigDecimal;
+import java.net.URLEncoder;
+import java.sql.Connection;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
@@ -16,6 +18,7 @@ import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.UUID;
 
 import net.sf.json.JSONArray;
 import net.sf.json.JSONObject;
@@ -34,9 +37,11 @@ import com.ips.security.utility.IpsCrypto;
 import com.shove.Convert;
 import com.shove.config.IPayConfig;
 import com.shove.config.QianduoduoConfig;
+import com.shove.data.dao.MySQL;
 import com.shove.services.QianduoduoPayService;
 import com.shove.services.QianduoduoPayUtil;
 import com.shove.shuanquanUtil.Common;
+import com.shove.shuanquanUtil.HttpClientUtil;
 import com.shove.shuanquanUtil.MD5;
 import com.shove.shuanquanUtil.RsaHelper;
 import com.shove.vo.LoanInfoBean;
@@ -61,6 +66,7 @@ import com.sp2p.service.RechargeService;
 import com.sp2p.service.UserIntegralService;
 import com.sp2p.service.UserService;
 import com.sp2p.service.admin.BorrowManageService;
+import com.sp2p.service.admin.FundManagementService;
 import com.sp2p.service.admin.ProtectOldUserService;
 import com.sp2p.service.admin.UserManageServic;
 
@@ -85,8 +91,9 @@ public class QianduoduoPayAction extends BasePageAction {
 	private UserService userService;
 	private UserIntegralService userIntegralService;
 	private QianduoduoPayService qianduoduoPayService;
-
+	private FundManagementService fundManagementService;
 	private FinanceService financeService;
+	private ProtectOldUserDao protectOldUserDao;
 	private ExperiencemoneyService experiencemoneyService;
 	private UserManageServic userManageServic;
 	private BorrowManageService borrowManageService;
@@ -428,19 +435,148 @@ public class QianduoduoPayAction extends BasePageAction {
 		// 调用投标申请接口
 
 		String rsString = "";
-		if (isDayThe == 2) {
-			// 天标
-			rsString = this.tenderTradeDayThe(borrowId, amountDouble, num);
-		} else {
-			// 其他标
-			rsString = this.tenderTrade(borrowId, amountDouble, num, status);
-		}
+		
 		// if (rsString != null) {
 		// obj.put("msg", rsString);
 		// obj.put("dateThe", "1");
 		// }
 		// JSONHelper.printObject(obj);
-		return rsString;
+		if(user.getIsprivate()==1){
+			LoanTransferBean loanTransferBean = new LoanTransferBean();
+			//String uuid=UUID.randomUUID().toString().replaceAll("-", "");
+			String LoanJsonList = "";
+			String purpose = "";// 借款用途
+			String pTIpsAcctNo = "";// 借款人IPS账号
+			String tradeNo = "";// 标的流水号
+
+			Map<String, String> investDetailMap1 = financeService
+					.queryBorrowInvest(borrowId);
+			if (investDetailMap1 != null && investDetailMap1.size() > 0) {
+
+				purpose = investDetailMap1.get("purpose");
+				pTIpsAcctNo = investDetailMap1.get("portMerBillNo");
+				tradeNo = investDetailMap1.get("tradeNo");
+			}
+
+			String pTrdAmt = String.format("%.2f", amountDouble);// 投资金额
+			String pMerBillNo = QianduoduoPayUtil.getOrderNo("");// 商户流水号
+			String borrowAmount = investDetailMap1.get("borrowAmount");
+
+			List<LoanInfoBean> listmlib = new ArrayList<LoanInfoBean>();
+			LoanInfoBean loanInfoBean = new LoanInfoBean();
+			loanInfoBean.setLoanOutMoneymoremore(user.getPortMerBillNo());// 付款人乾多多标志
+			loanInfoBean.setLoanInMoneymoremore(pTIpsAcctNo);// 收款人乾多多标志
+			loanInfoBean.setOrderNo(pMerBillNo);// 商户流水号
+			loanInfoBean.setBatchNo(String.valueOf(borrowId));// 网贷平台标号 标id
+			loanInfoBean.setExchangeBatchNo("");// 流转标标号
+			loanInfoBean.setAdvanceBatchNo("");// 垫资标号
+			loanInfoBean.setAmount(pTrdAmt);// 投资金额
+			loanInfoBean.setFullAmount(borrowAmount);// 满标标额
+			loanInfoBean.setTransferName(purpose);// 借款用途
+			loanInfoBean.setRemark("1");
+			loanInfoBean.setSecondaryJsonList("");// 二次转账
+			listmlib.add(loanInfoBean);
+			// 编码
+			LoanJsonList = new Gson().toJson(listmlib);
+			loanTransferBean.setLoanJsonList(LoanJsonList);// 转账列表
+			loanTransferBean
+					.setPlatformMoneymoremore(QianduoduoConfig.platformMoneymoremore);// 平台乾多多标识
+			loanTransferBean.setTransferAction(1);// 1.投标2.还款3.其他
+			loanTransferBean.setAction(2);// 1.手动转账2.自动转账
+			loanTransferBean.setTransferType(2);// 1.桥连2.直连
+			loanTransferBean.setNeedAudit("");// 空.需要审核1.自动通过
+			loanTransferBean.setRemark1("");
+			loanTransferBean.setRemark2("");
+			loanTransferBean.setRemark3("");
+			String randomTimeStamp = "";
+			if ("1".equals(QianduoduoConfig.antistate)) {
+				Date d = new Date();
+				SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMddHHmmssSSS");
+				randomTimeStamp = Common.getRandomNum(2) + sdf.format(d);
+			}
+			loanTransferBean.setRandomTimeStamp(randomTimeStamp);
+
+			String dataStr = loanTransferBean.getLoanJsonList()
+					+ loanTransferBean.getPlatformMoneymoremore()
+					+ loanTransferBean.getTransferAction()
+					+ loanTransferBean.getAction()
+					+ loanTransferBean.getTransferType()
+					+ loanTransferBean.getNeedAudit()
+					+ loanTransferBean.getRandomTimeStamp()
+					+ loanTransferBean.getRemark1() + loanTransferBean.getRemark2()
+					+ loanTransferBean.getRemark3()
+					+ loanTransferBean.getReturnURL()
+					+ loanTransferBean.getNotifyURL();
+			MD5 md5 = new MD5();
+			RsaHelper rsa = RsaHelper.getInstance();
+			if ("1".equals(QianduoduoConfig.antistate)) {
+				dataStr = md5.getMD5Info(dataStr);
+			}
+			loanTransferBean.setSignInfo(rsa.signData(dataStr,
+					QianduoduoConfig.privateKeyPKCS8));
+
+			// 编码
+			loanTransferBean.setLoanJsonList(URLEncoder.encode(
+					loanTransferBean.getLoanJsonList(), "utf-8"));
+			Map<String, String> loanTransferMap = BeanHelper
+					.beanToMap(loanTransferBean);
+			userService.saveQianduoduoOrderNo(user.getId(),
+					user.getPortMerBillNo(), pMerBillNo, loanTransferMap);
+			Long investorId = -1L;
+			double amount1 = 0.0;
+			Gson gson = new Gson();
+			List<Map<String, String>> list= gson
+					.fromJson(
+							LoanJsonList,
+							new com.google.gson.reflect.TypeToken<List<Map<String, String>>>() {
+							}.getType());
+
+			for (Map<String, String> map : list) {
+				investorId = Convert.strToLong(
+						map.get("Remark"), -1);
+				amount1 = Convert.strToDouble(map.get("Amount"),
+						0.00);
+				Long borrowid = Convert.strToLong(
+						map.get("BatchNo"), -1);
+				String orderNoLoanJson = map.get("OrderNo");
+					Connection conn = MySQL.getConnection();
+					try {
+						StringBuffer command = new StringBuffer();
+						command.append("update t_user set usableSum = ifnull(usableSum, 0.00) + "+amount1+" where id = "+investorId+";");
+						long result = MySQL.executeNonQuery(conn, command.toString());
+						long returnId = -1;
+						command=new StringBuffer();
+						command.append(" insert into t_fundrecord (userId, recordTime, operateType, fundMode, handleSum, usableSum, freezeSum, dueinSum,trader, dueoutSum, remarks, oninvest, paynumber, paybank, cost,income,borrow_id,pMerBillNo) ");
+						command.append(" select "+investorId+",now(), -1 ,'双乾支付',"+amount1+", a.usableSum, a.freezeSum, ifnull(sum(b.recivedPrincipal + b.recievedInterest - b.hasPrincipal - b.hasInterest),0), a.dueoutSum,"+investorId+",'平台补偿老米投标利息',");
+						command.append(" 0,-1,'双乾支付',"+amount1+","+amount1+","+borrowId+",'"+orderNoLoanJson+"' ");
+						command.append(" from t_user a left join t_invest b on a.id = b.investor where a.id = "+investorId+" group by a.id;");
+						returnId = MySQL.executeNonQuery(conn, command.toString());
+						conn.commit();
+					} catch (Exception e) {
+						log.error(e);
+						conn.rollback();
+					} finally {
+						conn.close();
+					}
+				}
+			Map<String, String> resultMap = qianduoduoPayService
+					.tenderTradeDeal(list.get(0), getBasePath());
+			getOut().print(
+					"<script>alert('" + resultMap.get("pReturn")
+							+ "');parent.location.href='"
+							+ request().getContextPath() + ""
+							+ resultMap.get("url") + "';</script>");
+			return null;
+		}else{
+			if (isDayThe == 2) {
+				// 天标
+				rsString = this.tenderTradeDayThe(borrowId, amountDouble, num);
+			} else {
+				// 其他标
+				rsString = this.tenderTrade(borrowId, amountDouble, num, status);
+			}
+			return rsString;//小号
+		}
 	}
 
 	/**
